@@ -1,54 +1,76 @@
+#include <cstdlib>
+#include <cstdio>
 #include <iostream>
+#include <string>
+using namespace std;
 
-class Complex {
+class Character {
    private:
-    double real;
-    double imag;
+    string Name;
+    int Hp;
+    int Sp;
 
    public:
-    Complex(double real = 0.0, double imag = 0.0) {
-        this->real = real;
-        this->imag = imag;
-    }
+    void setName(string Name) { this->Name = Name; }
+    void setHp(int Hp) { this->Hp = Hp; }
+    void setSp(int Sp) { this->Sp = Sp; }
 
-    friend Complex operator+(const Complex& c1, const Complex& c2);
-    friend Complex operator-(const Complex& c1, const Complex& c2);
-    friend Complex operator*(const Complex& c1, const Complex& c2);
-    friend std::ostream& operator<<(std::ostream& os, const Complex& c);
+    void showStatus() {
+        cout << "Name:" << this->Name << endl;
+        cout << "HP:" << this->Hp << endl;
+        cout << "SP:" << this->Sp << endl;
+    }
 };
 
-Complex operator+(const Complex& c1, const Complex& c2) {
-    return Complex(c1.real + c2.real, c1.imag + c2.imag);
-}
+class Player : public Character {
+   private:
+    int ATK;
+    int DEF;
 
-Complex operator-(const Complex& c1, const Complex& c2) {
-    return Complex(c1.real - c2.real, c1.imag - c2.imag);
-}
+   public:
+    Player(string Name, int Hp, int Sp) {
+        setName(Name);
+        setHp(Hp);
+        setSp(Sp);
+        ATK = 15;
+        DEF = 10;
+    }
 
-Complex operator*(const Complex& c1, const Complex& c2) {
-    return Complex(c1.real * c2.real - c1.imag * c2.imag, c1.imag * c2.real + c1.real * c2.imag);
-}
+    void showPlayerStatus() {
+        showStatus();
+        printf("ATK:%d\nDEF:%d\n", ATK, DEF);
+    }
+};
 
-std::ostream& operator<<(std::ostream& os, const Complex& c) {
-    os << "(" << c.real << ", " << c.imag << ")";
-    return os;
-}
+class Monster : public Character {
+   private:
+    int EXP;
+
+   public:
+    Monster(string Name, int Hp, int Sp, int EXP) {
+        setName(Name);
+        setHp(Hp);
+        setSp(Sp);
+        this->EXP = EXP;
+    }
+
+    void showMonsterStatus() {
+        showStatus();
+        printf("EXP:%d\n", EXP);
+    }
+};
 
 int main() {
-    Complex c1(1.0, 2.0);
-    Complex c2(3.0, 4.0);
+    string n1, n2;
+    int a, b, c, d, e;
+    cin >> n1 >> a >> b;
+    cin >> n2 >> c >> d >> e;
 
-    std::cout << "c1 = " << c1 << std::endl;
-    std::cout << "c2 = " << c2 << std::endl;
+    Player P1(n1, a, b);
+    P1.showPlayerStatus();
 
-    Complex c3 = c1 + c2;
-    std::cout << "c1 + c2 = " << c3 << std::endl;
-
-    Complex c4 = c1 - c2;
-    std::cout << "c1 - c2 = " << c4 << std::endl;
-
-    Complex c5 = c1 * c2;
-    std::cout << "c1 * c2 = " << c5 << std::endl;
+    Monster M1(n2, c, d, e);
+    M1.showMonsterStatus();
 
     return 0;
 }
